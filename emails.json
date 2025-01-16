@@ -1,0 +1,17 @@
+{
+    "emails": [
+      {
+        "email": "example1@gmail.com",
+        "content": "Đây là nội dung cho email 1."
+      },
+      {
+        "email": "example2@gmail.com",
+        "content": "Đây là nội dung cho email 2."
+      },
+      {
+        "email": "example3@gmail.com",
+        "content": "Đây là nội dung cho email 3."
+      }
+    ]
+  }
+  
