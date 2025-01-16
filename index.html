@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nhận Nội Dung Theo Email</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Nhập Email để Nhận Nội Dung</h1>
+    <input type="email" id="emailInput" placeholder="Nhập Gmail của bạn" required>
+    <button onclick="getContent()">Nhận Nội Dung</button>
+
+    <div id="contentArea"></div>
+    <button id="copyButton" style="display:none;" onclick="copyContent()">Sao Chép</button>
+  </div>
+
+  <script>
+    let emailData = [];
+
+    // Tải dữ liệu email từ file JSON
+    async function loadEmails() {
+      try {
+        const response = await fetch('emails.json');
+        const data = await response.json();
+        emailData = data.emails;
+      } catch (error) {
+        console.error('Không thể tải dữ liệu email:', error);
+      }
+    }
+
+    // Xử lý yêu cầu nhận nội dung theo email
+    function getContent() {
+      const emailInput = document.getElementById('emailInput').value.trim();
+      const contentArea = document.getElementById('contentArea');
+      const copyButton = document.getElementById('copyButton');
+
+      const emailEntry = emailData.find(entry => entry.email === emailInput);
+
+      if (emailEntry) {
+        contentArea.textContent = emailEntry.content;
+        copyButton.style.display = 'inline-block'; // Hiển thị nút sao chép
+      } else {
+        contentArea.textContent = 'Email không hợp lệ hoặc không có nội dung tương ứng!';
+        copyButton.style.display = 'none'; // Ẩn nút sao chép nếu không có nội dung
+      }
+    }
+
+    // Hàm sao chép nội dung vào clipboard
+    function copyContent() {
+      const contentArea = document.getElementById('contentArea');
+      const text = contentArea.textContent;
+
+      if (text) {
+        navigator.clipboard.writeText(text).then(function() {
+          alert("Đã sao chép nội dung!");
+        }).catch(function(err) {
+          alert("Lỗi khi sao chép: " + err);
+        });
+      }
+    }
+
+    // Tải dữ liệu khi trang được tải
+    window.onload = loadEmails;
+  </script>
+</body>
+</html>
